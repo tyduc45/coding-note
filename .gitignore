@@ -1,0 +1,25 @@
+# Compiled C/C++ artifacts
+*.exe
+*.dll
+*.o
+*.obj
+*.pdb
+*.ilk
+*.lib
+*.exp
+
+# Build output directories
+[Bb]uild/
+[Dd]ebug/
+[Rr]elease/
+out/
+
+# IDE and editor-local settings
+.vs/
+.vscode/
+.idea/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
