@@ -8,65 +8,64 @@ using namespace std;
 // @lc code=start
 class Solution {
 public:
-    const static int M = 105;
-    const static int N = 105;
-    int move[5] = {
-        -1,0,1,0,-1
-    };
-    int queue[M * N][2];
-    int l,r;
-    bool visited[M][N];
+   static const int M = 105;
+   static const int N = 105;
+   bool visited[M][N];
+   int queue[M * N][2];
+   int l , r;
+   int move[5] = {-1,0 , 1, 0 , -1};
+   int maxDistance(vector<vector<int>> &grid)
+   {
+     int m = grid.size();
+     int n = grid[0].size();
+     l = r = 0;
+     int seas = 0;
+     for(int i = 0 ; i < m ; i++)
+     {
+        for(int j = 0 ; j < n ;j++)
+        {
+            if(grid[i][j] == 1)
+            {
+               visited[i][j] = true;
+               queue[r][0] = i;
+               queue[r++][1] = j; 
+            }
+            else 
+            {
+                visited[i][j] = false;
+                seas++;
+            }
+        }
+     }
+     if(seas == 0 || seas == m*n)
+     {
+        return -1;
+     }
+     int level = 0;
+     while(l < r)
+     {
+        int size = r - l;
+        for(int i = 0 ; i < size ; i++)
+        {
+            int x = queue[l][0];
+            int y = queue[l++][1];
 
-    int maxDistance(vector<vector<int>>& grid) {
-        l = r = 0;
-        int m = grid.size();
-        int n = grid[0].size();
-        int seas = 0;
-        for(int i = 0 ; i < m ;i++)
-        {
-            for(int j = 0 ; j < n ; j++)
+            for(int k = 0 ; k < 4 ; k++)
             {
-                if(grid[i][j] == 1)
+                int nx = x + move[k];
+                int ny = y + move[k + 1];
+                if(nx >= 0 && ny >= 0 && nx < m && ny < n && !visited[nx][ny])
                 {
-                    visited[i][j] = true;
-                    queue[r][0] = i;
-                    queue[r++][1] = j;
-                }
-                else
-                {
-                    visited[i][j] = false;
-                    seas++;                
-                }
-           }    
-        }
-        if(seas == 0 || seas == m * n)
-        {
-            return -1;
-        }
-        int level = 0;
-        while(l < r)
-        {
-            level++;
-            int size = r - l;
-            for(int k = 0 ,x , y , nx , ny;k < size ;k++)
-            {
-                x = queue[l][0];
-                y = queue[l++][1];
-                for(int i = 0 ; i < 4;i++)
-                {
-                    nx = x + move[i];
-                    ny = y + move[i + 1];
-                    if(nx >= 0 && ny >= 0 && nx < m && ny < n && !visited[nx][ny])
-                    {
-                        visited[nx][ny] = true;
-                        queue[r][0] = nx;
-                        queue[r++][1] = ny;
-                    }
+                    visited[nx][ny] = true;
+                    queue[r][0] = nx;
+                    queue[r++][1] = ny;
                 }
             }
         }
-        return level - 1;
-    }
+        level++;
+     }
+     return level - 1;
+   }
 };
 // @lc code=end
 
