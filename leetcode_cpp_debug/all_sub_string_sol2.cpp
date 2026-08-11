@@ -21,6 +21,7 @@ public:
         }
         return builder;
     }
+    //vector<char> &path + int size 相当于string 
     void f(string &s , int i , vector<char> &path , int size , set<string> & set)
     {
         if(i == s.length())
@@ -31,8 +32,8 @@ public:
         else 
         {
             path[size] = s[i];
-            f(s , i + 1 , path , size + 1 , set);
-            f(s , i + 1 , path , size , set);
+            f(s , i + 1 , path , size + 1 , set); // 要这个字符， 那么path的size + 1
+            f(s , i + 1 , path , size , set);          // 不要这个字符， 那么path的size和之前一样
         }
     }
     vector<string> generatePermutation(string s) {
