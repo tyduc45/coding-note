@@ -1,0 +1,53 @@
+/*
+ * @lc app=leetcode id=46 lang=cpp
+ *
+ * [46] Permutations
+ */
+
+// @lc code=start
+#include <vector>
+using namespace std;
+class Solution {
+public:
+
+    void swap(vector<int> &nums , int i , int j)
+    {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    // 从第一个数字开始，每个数字全部跑一下递归 ， int i 表示当前在哪一个位置
+    void f(vector<int> &nums , int i , vector<vector<int>> &ans)
+    {
+        // 终止条件
+        if(i == nums.size())
+        {
+            vector<int> cur;
+            for(const auto &num : nums)
+            {
+                cur.push_back(num);
+            }
+            ans.push_back(cur);
+        }
+        else 
+        {
+            // dfs 就是探索到底，然后回去， 因此需要抵消掉之前的操作，才能回到开始的状态
+            // 回到开始状态后，换一条路继续探索 ,再次情景就是i + 1
+            for(int j = i ; j < nums.size() ; j++)
+            {
+                swap(nums , i , j);// 之前的操作
+                f(nums , i + 1 , ans);
+                swap(nums , i , j); // 抵消之前的操作，为了回去
+            }
+        }
+    }
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> ans;
+        vector<int> path;
+        f(nums , 0, ans);
+        return ans;
+    }
+};
+// @lc code=end
+
