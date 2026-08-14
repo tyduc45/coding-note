@@ -1,0 +1,41 @@
+
+你相信一个函数bottomOut能够
+// 栈底元素移除掉，上面的元素盖下来
+// 返回移除掉的栈底元素
+
+首先 ，我们应该削减问题规模， 由于stack只能操作stack 顶部， 我们有
+int a = stack.pop();
+对于削减之后的子问题，有两种情况
+1  削减后stack为空了， 那么无需继续操作， 当前元素就是stack底部
+if(stack.empty())
+	{
+		return a;
+	}
+
+如果非空， 那么首先int last = bottomOut（stack）
+由于上面的需要盖下来，我们需要stack.erase(last),
+以及stack.push(ans);
+//错误 ， erase这个工作你已经信任函数帮你做了， 你不要再做，你只需从子问题回复当前层因该有的状态，这样才能维持问题规模和递归的对应性
+对应性： 当前层应该解决当前层的问题。如果不回复，就变成了越级解决子层的子问题，对应性破坏，递归失效
+a弹出去了，现在需要加回来，所以stack.push(a);
+那么为什么我不能信任它已经把last给我返回了呢？按照我目前的理解，我最后根本就不应该返回last 啊
+错误，权责没划分清楚， 递归调用仅仅帮你完整解决了“更小一层的子问题“，最终的结果仍然需要你来交付给上一层
+只有这样，你才能从外部调用/验证递归的结果。
+
+总体伪代码
+
+int bottomOut(stack<int> &s)
+{
+	int a = stack.pop();
+	if(stack.empty())
+	{
+		return a;
+	}
+	else
+	{
+		int last = bottomOut(stack);
+		stack.push(a);
+		return last;
+	}
+}
+
