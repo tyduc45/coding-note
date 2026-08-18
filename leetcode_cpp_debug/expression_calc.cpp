@@ -1,5 +1,6 @@
 //https://www.nowcoder.com/practice/c215ba61c8b1443b996351df929dc4d4
 #include <vector>
+#include <string>
 using namespace std;
 class Solution {
 public:
