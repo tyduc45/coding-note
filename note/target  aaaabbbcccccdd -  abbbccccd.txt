@@ -1,0 +1,97 @@
+target : aaaabbbcccccdd ->  abbbccccdd
+
+"aaac" 
+
+  aaaabbbcccccdd -> aaaabcccdd
+
+"bbccdk" 
+
+aaaabbbcccccdd -> accccdd
+
+"aaabbbbbbbbbck" 
+
+ aaaabbbcccccdd
+
+
+t = aaabbb ccced
+s = bbb ssswd
+
+builder :  aaaccced
+
+
+t = bbbc
+s = aaa
+
+builder = bbbc
+public static String next(String t, String s) {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0, j = 0; i < t.length();) {
+			if (j == s.length()) {
+				builder.append(t.charAt(i++));
+			} else {
+				if (t.charAt(i) < s.charAt(j)) {
+					builder.append(t.charAt(i++));
+				} else if (t.charAt(i) > s.charAt(j)) {
+					j++;
+				} else {
+					i++;
+					j++;
+				}
+			}
+		}
+		return builder.toString();
+	}
+
+减枝 ， 排序，下面算法逻辑 关系？
+string nextFunc(string t , string s)
+    {
+        string builder;
+        builder.reserve(max(t.length() ,s.length()));
+        for(int i = 0 , j = 0; i < t.length();)
+        {
+            if(j == s.length())
+            {
+                builder += t[i++];
+            }
+            else 
+            {
+                if(t[i] < s[j])
+                {
+                    builder += t[i++];
+                }
+                else if(t[i] > s[j])
+                {
+                    j++;
+                }
+                else 
+                {
+                    i++;
+                    j++;
+                }
+            }
+        }
+        return builder;
+    }
+输入，target ：t ， stick ：s 
+输出，t被s干掉之后的结果
+
+if(j == s.length())
+            {
+                builder += t[i++];
+            }
+s用尽，说明s已经没有了干掉字符的能力， t的东西全部处理不了，所以t的直接加到builder
+
+s没有用尽，就要尽量干掉t的前缀，已经知道t。s是排好序的
+什么叫干掉？：不进入builder 就是干掉 。 因此若两者字符一样，就不进builder ，迭代器向后加
+如果t小于s，那么s自然干不掉它， t应该进builder
+如果t大于s，s也干不掉它，为什么这个时候t不进入builder ，s的迭代器向后移了？
+
+t[i] < s[j]:可以下最终结论
+s 是有序的,所以 s[j] <= s[j+1] <= ... <= s[末尾]。既然 t[i] < s[j],那么 s 中所有剩下的字符都严格大于 t[i]——不只是当前这个 s[j] 干不掉它,是 s 的整个剩余部分都干不掉它。
+因此s绝对干不掉t，由于t也是有序的， 因此后面可能会出现能被s干掉的更大字符，应该直接s待命， t进入builder的同时向后找找
+t[i] > s[j]:结论完全对称， s当前干不掉t，但是后续s可能会出现b当前s更大的能干掉t的字符，因此t待命，s向后找找，只不过s不需要进builder
+
+因此这个逻辑严重依赖于两个字符串全部有序的前提，因此要求他们全部预先排好序
+
+
+11106 
