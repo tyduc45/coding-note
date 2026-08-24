@@ -3,6 +3,8 @@
  *
  * [726] Number of Atoms
  */
+
+// 嵌套类问题就是用一个where来代表当前位置， 遇到子问题（内层嵌套）就递归，更新where
 #include <vector>
 #include <string>
 #include <map>
@@ -10,7 +12,7 @@ using namespace std;
 // @lc code=start
 class Solution {
 public:
-    int where;
+    int where; //代表当前处理到哪一个地方了
     void fill(map<string , int>& ans , string& name , map<string , int>& pre, int count)
     {
          if(name.empty() && pre.empty()) return; // 没有结算元素，自然没有结算单元
@@ -28,9 +30,9 @@ public:
         string name;
         map<string , int> ans;
         map<string , int> pre;
-        while(i < s.length() && s[i] != ')')
+        while(i < s.length() && s[i] != ')') // 遇到右括号停止
         {
-            if(s[i] >= 'A' && s[i] <= 'Z' || s[i] == '(')
+            if(s[i] >= 'A' && s[i] <= 'Z' || s[i] == '(') 
             {
                 fill(ans, name , pre , cnt);
                 cnt = 0;
@@ -42,8 +44,8 @@ public:
                 }
                 else // '('
                 {
-                    pre = f(s , i+1); // 累积解算单元
-                    i = where + 1;
+                    pre = f(s , i+1); //遇到左括号处理下一个括号内不，处理方式相同，属于子问题，因此递归 累积解算单元
+                    i = where + 1; // 递归结束后，从结束位置的下一个开始处理剩下的
                 } 
             } 
             else if(s[i] >= '0' && s[i] <= '9')
@@ -56,7 +58,7 @@ public:
             }
         }
         fill(ans , name, pre , cnt);
-        where = i;
+        where = i; // 更新当前位置
         return ans;
     }
     string countOfAtoms(string formula) {
